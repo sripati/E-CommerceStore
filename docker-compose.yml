@@ -1,0 +1,70 @@
+# Local test stack: mirrors exactly what the EC2 user-data script runs.
+# Usage:  DOCKERHUB_USERNAME=<you> IMAGE_TAG=v1 docker compose up -d --build
+#         open http://localhost:8080
+
+x-backend: &backend
+  restart: unless-stopped
+  depends_on: [mongodb]
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    restart: unless-stopped
+    volumes: [mongo-data:/data/db]
+
+  user-service:
+    <<: *backend
+    build: ./backend/user-service
+    image: ${DOCKERHUB_USERNAME:-local}/ecommerce-user-service:${IMAGE_TAG:-v1}
+    container_name: user-service
+    ports: ["3001:3001"]
+    environment:
+      PORT: 3001
+      MONGODB_URI: mongodb://mongodb:27017/ecommerce_users
+      JWT_SECRET: ${JWT_SECRET:-local-dev-secret}
+
+  product-service:
+    <<: *backend
+    build: ./backend/product-service
+    image: ${DOCKERHUB_USERNAME:-local}/ecommerce-product-service:${IMAGE_TAG:-v1}
+    container_name: product-service
+    ports: ["3002:3002"]
+    environment:
+      PORT: 3002
+      MONGODB_URI: mongodb://mongodb:27017/ecommerce_products
+
+  cart-service:
+    <<: *backend
+    build: ./backend/cart-service
+    image: ${DOCKERHUB_USERNAME:-local}/ecommerce-cart-service:${IMAGE_TAG:-v1}
+    container_name: cart-service
+    ports: ["3003:3003"]
+    environment:
+      PORT: 3003
+      MONGODB_URI: mongodb://mongodb:27017/ecommerce_carts
+      PRODUCT_SERVICE_URL: http://product-service:3002
+
+  order-service:
+    <<: *backend
+    build: ./backend/order-service
+    image: ${DOCKERHUB_USERNAME:-local}/ecommerce-order-service:${IMAGE_TAG:-v1}
+    container_name: order-service
+    ports: ["3004:3004"]
+    environment:
+      PORT: 3004
+      MONGODB_URI: mongodb://mongodb:27017/ecommerce_orders
+      CART_SERVICE_URL: http://cart-service:3003
+      PRODUCT_SERVICE_URL: http://product-service:3002
+      USER_SERVICE_URL: http://user-service:3001
+
+  frontend:
+    build: ./frontend
+    image: ${DOCKERHUB_USERNAME:-local}/ecommerce-frontend:${IMAGE_TAG:-v1}
+    container_name: frontend
+    restart: unless-stopped
+    ports: ["8080:80"]
+    depends_on: [user-service, product-service, cart-service, order-service]
+
+volumes:
+  mongo-data:

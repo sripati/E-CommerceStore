@@ -1,0 +1,81 @@
+#!/bin/bash
+# EC2 bootstrap: install Docker, pull the 5 application images, run all containers.
+# Rendered by Terraform templatefile(): dockerhub_username, image_tag, jwt_secret are injected.
+set -euo pipefail # no -x: avoids echoing JWT_SECRET into the console log
+
+# Log everything to /var/log/user-data.log and the EC2 system console
+exec > >(tee /var/log/user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
+
+DOCKERHUB_USER="${dockerhub_username}"
+TAG="${image_tag}"
+NETWORK="ecommerce-net"
+
+echo "===== [1/4] Installing Docker ====="
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y
+apt-get install -y ca-certificates curl gnupg
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+  > /etc/apt/sources.list.d/docker.list
+apt-get update -y
+apt-get install -y docker-ce docker-ce-cli containerd.io
+systemctl enable --now docker
+usermod -aG docker ubuntu
+docker --version
+
+echo "===== [2/4] Pulling images from Docker Hub ====="
+docker pull mongo:7
+for svc in user-service product-service cart-service order-service frontend; do
+  docker pull "$DOCKERHUB_USER/ecommerce-$svc:$TAG"
+done
+
+echo "===== [3/4] Starting containers ====="
+docker network create "$NETWORK" || true
+
+docker run -d --name mongodb --network "$NETWORK" --restart unless-stopped \
+  -v mongo-data:/data/db \
+  mongo:7
+
+docker run -d --name user-service --network "$NETWORK" --restart unless-stopped \
+  -p 3001:3001 \
+  -e PORT=3001 \
+  -e MONGODB_URI=mongodb://mongodb:27017/ecommerce_users \
+  -e JWT_SECRET="${jwt_secret}" \
+  "$DOCKERHUB_USER/ecommerce-user-service:$TAG"
+
+docker run -d --name product-service --network "$NETWORK" --restart unless-stopped \
+  -p 3002:3002 \
+  -e PORT=3002 \
+  -e MONGODB_URI=mongodb://mongodb:27017/ecommerce_products \
+  "$DOCKERHUB_USER/ecommerce-product-service:$TAG"
+
+docker run -d --name cart-service --network "$NETWORK" --restart unless-stopped \
+  -p 3003:3003 \
+  -e PORT=3003 \
+  -e MONGODB_URI=mongodb://mongodb:27017/ecommerce_carts \
+  -e PRODUCT_SERVICE_URL=http://product-service:3002 \
+  "$DOCKERHUB_USER/ecommerce-cart-service:$TAG"
+
+docker run -d --name order-service --network "$NETWORK" --restart unless-stopped \
+  -p 3004:3004 \
+  -e PORT=3004 \
+  -e MONGODB_URI=mongodb://mongodb:27017/ecommerce_orders \
+  -e CART_SERVICE_URL=http://cart-service:3003 \
+  -e PRODUCT_SERVICE_URL=http://product-service:3002 \
+  -e USER_SERVICE_URL=http://user-service:3001 \
+  "$DOCKERHUB_USER/ecommerce-order-service:$TAG"
+
+docker run -d --name frontend --network "$NETWORK" --restart unless-stopped \
+  -p 80:80 \
+  "$DOCKERHUB_USER/ecommerce-frontend:$TAG"
+
+echo "===== [4/4] Verifying services ====="
+sleep 15
+docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+for port in 3001 3002 3003 3004; do
+  echo "localhost:$port -> $(curl -s --max-time 5 "http://localhost:$port/" || echo 'NOT RESPONDING')"
+done
+echo "localhost:80/health -> $(curl -s --max-time 5 http://localhost/health || echo 'NOT RESPONDING')"
+echo "===== Bootstrap complete ====="

@@ -12,10 +12,23 @@ const PORT = process.env.PORT || 3004;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_orders', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+// MongoDB Connection (retries so the service stays up while MongoDB is starting)
+const connectDB = () => {
+  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_orders', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => console.log('Order Service connected to MongoDB'))
+    .catch((err) => {
+      console.error(`Order Service MongoDB connection failed: ${err.message}. Retrying in 5s...`);
+      setTimeout(connectDB, 5000);
+    });
+};
+connectDB();
+
+// Sample response
+app.get('/', (req, res) => {
+  res.send('Order Service Running');
 });
 
 // Routes
