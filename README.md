@@ -2,6 +2,9 @@
 
 A full-stack MERN e-commerce application built with microservices architecture, featuring 4 separate Node.js backend services and a React frontend.
 
+## Screenshot
+**Important Note: Proof of Assignment Screenshots are available in the last section**
+
 ## 🏗️ Architecture Overview
 
 This application demonstrates modern microservices architecture with the following components:
@@ -544,3 +547,128 @@ For support and questions:
 - **Admin Dashboard**: Administrative interface
 - **Analytics**: Order and user analytics
 - **Payment Integration**: Real payment gateway integration
+
+## Proof of Assignment Screenshot
+### 01 – Dockerfiles exist
+<img width="929" height="85" alt="image" src="https://github.com/user-attachments/assets/3eb3ffc4-8014-420d-af41-51b4b3aec87e" />
+<img width="1175" height="422" alt="image" src="https://github.com/user-attachments/assets/0797aec3-77db-4f59-80d3-e0c17c56b200" />
+<img width="1177" height="384" alt="image" src="https://github.com/user-attachments/assets/a592a9bf-df28-45fe-aa0b-4efe51692639" />
+<img width="1168" height="392" alt="image" src="https://github.com/user-attachments/assets/dc595464-e386-404a-a673-e306bb6ce1e9" />
+<img width="1179" height="415" alt="image" src="https://github.com/user-attachments/assets/8545e061-d41f-4202-b8f1-6f079a8c1979" />
+<img width="1167" height="774" alt="image" src="https://github.com/user-attachments/assets/cfa954e3-f646-433d-ae60-540a11437d8e" />
+
+### 02 – Images built locally
+<img width="1343" height="314" alt="image" src="https://github.com/user-attachments/assets/bfbe1ffc-72db-468d-8a5b-adb39b1ff8b9" />
+
+### 03 – Containers running locally
+<img width="1383" height="170" alt="image" src="https://github.com/user-attachments/assets/5ed874a4-9e5b-40d2-8ad6-e40431c77255" />
+
+### 04 – Local sample responses
+<img width="875" height="160" alt="image" src="https://github.com/user-attachments/assets/b8b0bb24-0669-4f8d-b247-e8e93636825f" />
+<img width="491" height="156" alt="image" src="https://github.com/user-attachments/assets/65f043e3-489a-4fe6-b3b8-86cf1084965f" />
+
+### 05 – Docker Hub login and push
+<img width="1058" height="200" alt="image" src="https://github.com/user-attachments/assets/80415bfa-2afd-423c-98c3-f2506961d9d3" />
+
+### 06 – Docker Hub website
+<img width="1335" height="759" alt="image" src="https://github.com/user-attachments/assets/6988ca98-c705-438b-af08-cc4d44d165de" />
+
+### 07 – Terraform code
+<img width="899" height="78" alt="image" src="https://github.com/user-attachments/assets/26a3d341-6d70-4c72-a316-e4d602fdd162" />
+<img width="1240" height="701" alt="image" src="https://github.com/user-attachments/assets/c437b6b1-4c22-4baf-bda7-f1a278c64cc8" />
+
+### 08 – Init and validate
+<img width="630" height="223" alt="image" src="https://github.com/user-attachments/assets/37c4c4da-36bf-4cc8-9cbc-1fdd4877bb26" />
+
+### 09 – Resources managed by Terraform
+<img width="503" height="267" alt="image" src="https://github.com/user-attachments/assets/18680308-8967-4e1e-80a3-24e4fb3c170d" />
+
+### 10 – Plan shows no drift (proves the infrastructure matches the code)
+<img width="1023" height="348" alt="image" src="https://github.com/user-attachments/assets/4108febd-4930-4395-adaa-b323ba64345d" />
+
+### 11 – Terraform outputs
+<img width="785" height="291" alt="image" src="https://github.com/user-attachments/assets/52806fc8-6d81-443b-ac0e-e5b9446a8b6d" />
+
+### 12 - AWS Console VPC
+<img width="1470" height="696" alt="image" src="https://github.com/user-attachments/assets/d6a7b1e0-4731-4579-82c6-ce7f8e639ece" />
+
+### 13 - AWS Console Subnet
+<img width="1470" height="418" alt="image" src="https://github.com/user-attachments/assets/65d9ba32-a498-427e-8e3a-89896b34faf8" />
+<img width="1211" height="207" alt="image" src="https://github.com/user-attachments/assets/b6900c63-1dcc-41d8-9cb1-390ebe09725a" />
+
+### 14 - AWS Console Internet gateway
+<img width="1470" height="511" alt="image" src="https://github.com/user-attachments/assets/5fc2e363-b7c8-465a-8507-ba4bd409dabe" />
+<img width="1211" height="207" alt="image" src="https://github.com/user-attachments/assets/0fc37d92-3877-4c90-8d5f-f356a0744bc5" />
+
+### 15 – AWS Console Route table
+<img width="1470" height="604" alt="image" src="https://github.com/user-attachments/assets/1ec404f5-5960-4588-99a8-933d424b73ec" />
+
+### 16 - Security group inbound rules
+<img width="1470" height="644" alt="image" src="https://github.com/user-attachments/assets/1010dd76-d5d2-4797-a495-dc4bdf38dcd7" />
+
+### 17 - EC2 instance
+<img width="1470" height="699" alt="image" src="https://github.com/user-attachments/assets/38ff2bdf-7063-48e5-85da-e935b9ac25ba" />
+
+### 18 – Frontend homepage and via DNS
+<img width="1466" height="672" alt="image" src="https://github.com/user-attachments/assets/f51f49e7-3677-4173-bfcb-591468fbbae5" />
+<img width="1470" height="662" alt="image" src="https://github.com/user-attachments/assets/34d848bc-3990-4595-8439-caf01c2455f4" />
+
+### 19 - Frontend is Live
+<img width="581" height="154" alt="image" src="https://github.com/user-attachments/assets/8f4bed3e-576b-42e9-92ef-c5bad7040c4d" />
+
+### 20 - Each backend through the public frontend
+<img width="541" height="138" alt="image" src="https://github.com/user-attachments/assets/1d19e8bc-e893-4f79-a607-c84104bd80a3" />
+<img width="523" height="130" alt="image" src="https://github.com/user-attachments/assets/291213ea-ac9b-41d8-b7c3-7a5ea0d4ed46" />
+<img width="585" height="139" alt="image" src="https://github.com/user-attachments/assets/a7b4671f-93db-4b4a-8636-7a808f5f028a" />
+<img width="578" height="142" alt="image" src="https://github.com/user-attachments/assets/afe26162-9ed9-424a-b6a6-4f33990cdac6" />
+<img width="992" height="115" alt="image" src="https://github.com/user-attachments/assets/d4963368-26b4-40ab-b502-626989b60fe6" />
+
+### 21 – Backend ports are not public
+<img width="866" height="71" alt="image" src="https://github.com/user-attachments/assets/67c47ccb-68ae-4e08-adcb-5037e4a1fe57" />
+
+### 22 - eCommerce Register, Login and Other screens
+<img width="1470" height="823" alt="image" src="https://github.com/user-attachments/assets/a6407f6a-29ac-4e0d-adb1-c62991ee1800" />
+<img width="1319" height="816" alt="image" src="https://github.com/user-attachments/assets/78b6b156-3a76-4609-8d70-3d350a08796e" />
+<img width="1311" height="780" alt="image" src="https://github.com/user-attachments/assets/a46a8689-3880-4c20-ab5b-1d2dce99f083" />
+<img width="1309" height="633" alt="image" src="https://github.com/user-attachments/assets/269a8170-86cb-4164-91f8-2abd8e57afcb" />
+<img width="1302" height="433" alt="image" src="https://github.com/user-attachments/assets/fb474417-715f-4098-865d-ba21942bca8f" />
+<img width="1306" height="340" alt="image" src="https://github.com/user-attachments/assets/08771f27-7f2a-4de1-b6eb-02f99819cc68" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
